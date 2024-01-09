@@ -2,10 +2,13 @@ import pytest
 import os
 import datetime
 import pandas as pd
-from main import Importer, Visualizer
+from src.importer import Importer
+from src.visualizer import Visualizer
 
 @pytest.fixture
 def sample_input_file(tmp_path):
+    """Fixture that generates a sample input file for testing."""
+
     file_content = """Lenzing, 170447112, 34.75, EUR, Vienna;
                       Andritz, 170447131, 59.41, USD, New York;
                       EVN, 170447132, 28.55, EUR, Vienna;
@@ -16,6 +19,8 @@ def sample_input_file(tmp_path):
     return file_path
 
 def test_importer_read(sample_input_file):
+    """Test case for the read method in the Importer class."""
+
     importer = Importer(str(sample_input_file), 'output.csv')
     data = importer.read()
 
@@ -23,24 +28,34 @@ def test_importer_read(sample_input_file):
     assert data[0] == "Lenzing, 170447112, 34.75, EUR, Vienna;\n"
 
 def test_usd_to_eur_method():
+    """Test case for the usd_to_eur method in the Importer class."""
+
     imp = Importer('in_file', 'out_file')
     assert imp.usd_to_eur(10) == 9.1
 
 def test_to_upper_method():
+    """Test case for the to_upper method in the Importer class."""
+
     imp = Importer('in_file', 'out_file')
     assert imp.to_upper('test') == 'TEST'
 
-def test_rounded_share():
-    share = Importer('in_file', 'out_file')
-    assert share.round_share(12.2888) == 12.29
-
 def test_convert_timestamp_method():
+    """Test case for the convert_timestamp method in the Importer class."""
+
     imp = Importer('in_file', 'out_file')
     timestamp = 1641746789  
     converted = imp.convert_timestamp(timestamp)
     assert isinstance(converted, datetime.datetime)
 
+def test_rounded_share():
+    """Test case for the round_share method in the Importer class."""
+
+    share = Importer('in_file', 'out_file')
+    assert share.round_share(12.2888) == 12.29
+
 def test_importer_transform(sample_input_file, tmp_path):
+    """Test case for the transform method in the Importer class."""
+
     output_file_path = tmp_path / "output.csv"
     importer = Importer(str(sample_input_file), str(output_file_path))
     transformed_data = importer.transform()
@@ -54,14 +69,18 @@ def test_importer_transform(sample_input_file, tmp_path):
         assert "LENZING,1975-05-27 18:25:12,34.75,EUR,VIENNA\n" in output_content
 
 def test_visualizer_export(sample_input_file, tmp_path):
+    """Test case for the export method in the Visualizer class."""
+
     output_visualization_path = tmp_path / "visualization.jpg"
     visualizer = Visualizer(str(sample_input_file))
     visualizer.export()
 
-    assert os.path.exists('visualization/image.jpg')
+    assert os.path.exists('../visualization/image.jpg')
 
 def test_visualizer_importer_integration():
-    data = pd.read_csv('data/data_output.csv')
+    """Test case for integration between Visualizer and Importer."""
+    
+    data = pd.read_csv('../data/data_output.csv')
 
     expected_columns = ['COMPANY', 'DATE', 'SHARE', 'CURRENCY', 'COMPANY_LOCATION']
     assert all(col in data.columns for col in expected_columns)
