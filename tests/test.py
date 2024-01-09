@@ -2,8 +2,8 @@ import pytest
 import os
 import datetime
 import pandas as pd
-from src.importer import Importer
-from src.visualizer import Visualizer
+from src import Importer
+from src import Visualizer
 
 @pytest.fixture
 def sample_input_file(tmp_path):
