@@ -30,6 +30,10 @@ def test_to_upper_method():
     imp = Importer('in_file', 'out_file')
     assert imp.to_upper('test') == 'TEST'
 
+def test_rounded_share():
+    share = Importer('in_file', 'out_file')
+    assert share.round_share(12.2888) == 12.29
+
 def test_convert_timestamp_method():
     imp = Importer('in_file', 'out_file')
     timestamp = 1641746789  
@@ -49,8 +53,6 @@ def test_importer_transform(sample_input_file, tmp_path):
         assert "COMPANY,DATE,SHARE,CURRENCY,COMPANY_LOCATION\n" in output_content
         assert "LENZING,1975-05-27 18:25:12,34.75,EUR,VIENNA\n" in output_content
 
-
-
 def test_visualizer_export(sample_input_file, tmp_path):
     output_visualization_path = tmp_path / "visualization.jpg"
     visualizer = Visualizer(str(sample_input_file))
@@ -59,7 +61,7 @@ def test_visualizer_export(sample_input_file, tmp_path):
     assert os.path.exists('visualization/image.jpg')
 
 def test_visualizer_importer_integration():
-    data = pd.read_csv('data/test_output.csv')
+    data = pd.read_csv('data/data_output.csv')
 
     expected_columns = ['COMPANY', 'DATE', 'SHARE', 'CURRENCY', 'COMPANY_LOCATION']
     assert all(col in data.columns for col in expected_columns)
