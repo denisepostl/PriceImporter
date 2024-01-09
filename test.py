@@ -2,8 +2,8 @@ import pytest
 import os
 import datetime
 import pandas as pd
-from src import Importer
-from src import Visualizer
+from importer import Importer
+from visualizer import Visualizer
 
 @pytest.fixture
 def sample_input_file(tmp_path):
@@ -68,19 +68,17 @@ def test_importer_transform(sample_input_file, tmp_path):
         assert "COMPANY,DATE,SHARE,CURRENCY,COMPANY_LOCATION\n" in output_content
         assert "LENZING,1975-05-27 18:25:12,34.75,EUR,VIENNA\n" in output_content
 
-def test_visualizer_export(sample_input_file, tmp_path):
+def test_visualizer_export(sample_input_file):
     """Test case for the export method in the Visualizer class."""
-
-    output_visualization_path = tmp_path / "visualization.jpg"
     visualizer = Visualizer(str(sample_input_file))
     visualizer.export()
 
-    assert os.path.exists('../visualization/image.jpg')
+    assert os.path.exists('visualization/image.jpg')
 
 def test_visualizer_importer_integration():
     """Test case for integration between Visualizer and Importer."""
     
-    data = pd.read_csv('../data/data_output.csv')
+    data = pd.read_csv('data/data_output.csv')
 
     expected_columns = ['COMPANY', 'DATE', 'SHARE', 'CURRENCY', 'COMPANY_LOCATION']
     assert all(col in data.columns for col in expected_columns)

@@ -21,9 +21,9 @@ class Visualizer():
         """
         Exports the visualized data to an image file.
         """
-        imp = Importer(self.input_file, '../data/data_output.csv')
+        imp = Importer(self.input_file, 'data/data_output.csv')
         imp.transform()
-        data = pd.read_csv('../data/data_output.csv')
+        data = pd.read_csv('data/data_output.csv')
         
         data['DATE'] = pd.to_datetime(data['DATE'])
         
@@ -52,8 +52,8 @@ class Visualizer():
         plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
 
         plt.tight_layout()
-        plt.savefig('../visualization/image.jpg')
+        plt.savefig('visualization/image.jpg')
 
-vis = Visualizer('../data/data.txt')
+vis = Visualizer('data/data.txt')
 vis.export()
 
