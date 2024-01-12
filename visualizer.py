@@ -15,6 +15,10 @@ class Visualizer():
         -----------
         input_file : str
             The path to the input file.
+        output_file : str
+            The path to the output file.
+        data : list
+            Save content of file in list.
         """
         self.input_file = input_file
         self.out_file = out_file 
