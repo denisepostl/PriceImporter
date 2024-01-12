@@ -21,44 +21,44 @@ def sample_input_file(tmp_path):
 def test_importer_read(sample_input_file):
     """Test case for the read method in the Importer class."""
 
-    importer = Importer(str(sample_input_file), 'output.csv')
+    importer = Importer(str(sample_input_file))
     data = importer.read()
 
     assert len(data) == 4
     assert data[0] == "Lenzing, 170447112, 34.75, EUR, Vienna;\n"
 
 def test_usd_to_eur_method():
-    """Test case for the usd_to_eur method in the Importer class."""
+    """Test case for the usd_to_eur method in the Visualizer class."""
 
-    imp = Importer('in_file', 'out_file')
-    assert imp.usd_to_eur(10) == 9.1
+    vis = Visualizer('in_file', 'out_file')
+    assert vis.usd_to_eur(10) == 9.1
 
 def test_to_upper_method():
-    """Test case for the to_upper method in the Importer class."""
+    """Test case for the to_upper method in the Visualizer class."""
 
-    imp = Importer('in_file', 'out_file')
-    assert imp.to_upper('test') == 'TEST'
+    vis = Visualizer('in_file', 'out_file')
+    assert vis.to_upper('test') == 'TEST'
 
 def test_convert_timestamp_method():
-    """Test case for the convert_timestamp method in the Importer class."""
+    """Test case for the convert_timestamp method in the Visualizer class."""
 
-    imp = Importer('in_file', 'out_file')
+    vis = Visualizer('in_file', 'out_file')
     timestamp = 1641746789  
-    converted = imp.convert_timestamp(timestamp)
+    converted = vis.convert_timestamp(timestamp)
     assert isinstance(converted, datetime.datetime)
 
 def test_rounded_share():
     """Test case for the round_share method in the Importer class."""
 
-    share = Importer('in_file', 'out_file')
-    assert share.round_share(12.2888) == 12.29
+    vis = Visualizer('in_file', 'out_file')
+    assert vis.round_share(12.2888) == 12.29
 
-def test_importer_transform(sample_input_file, tmp_path):
+def test_visualizer_transform(sample_input_file, tmp_path):
     """Test case for the transform method in the Importer class."""
 
     output_file_path = tmp_path / "output.csv"
-    importer = Importer(str(sample_input_file), str(output_file_path))
-    transformed_data = importer.transform()
+    vis = Visualizer(str(sample_input_file), str(output_file_path))
+    transformed_data = vis.transform()
 
     assert transformed_data
     assert os.path.exists(str(output_file_path))
@@ -70,7 +70,7 @@ def test_importer_transform(sample_input_file, tmp_path):
 
 def test_visualizer_export(sample_input_file):
     """Test case for the export method in the Visualizer class."""
-    visualizer = Visualizer(str(sample_input_file))
+    visualizer = Visualizer(str(sample_input_file), 'data/data_output.csv')
     visualizer.export()
 
     assert os.path.exists('visualization/image.jpg')
