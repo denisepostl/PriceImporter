@@ -54,6 +54,6 @@ class Visualizer():
         plt.tight_layout()
         plt.savefig('visualization/image.jpg')
 
-vis = Visualizer('data/data.txt')
+vis = Visualizer('data/data.csv')
 vis.export()
 
